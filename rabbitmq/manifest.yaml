@@ -1,3 +1,20 @@
+# Config Map
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rabbitmq
+  namespace: roboshop
+  labels:
+    tier: database
+    project: rosboshop
+    component: rabbitmq
+
+data:
+  RABBITMQ_DEFAULT_USER: "roboshop"
+  RABBITMQ_DEFAULT_PASS: "roboshop123"
+
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -32,6 +49,9 @@ spec:
         - name: rabbitmq
           image: rabbitmq:3
           imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: rabbitmq
 
 ---
 # Adding service for Mongo db
