@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+  namespace: roboshop
+  annotations:
+    kubernetes.io/change-cause: "deploying mongodb:1.2.0"
+  labels:
+    tier: database
+    project: rosboshop
+    component: mongodb
+
+spec:
+  replicas: 3
+  selector:
+    # This match labels will go and find the pods who contain these labels
+    matchLabels:
+      tier: database
+      project: rosboshop
+      component: mongodb
+
+  # This is a POD definition/template (pod is a subset of replica-set)
+  template:
+    metadata:
+      # POD Labels, these labels will refer in replica-set selector
+      labels:
+        tier: database
+        project: rosboshop
+        component: mongodb
+    spec:
+      containers:
+        - name: mongodb
+          image: maheshbabu22neeli/mongodb:1.2.0
+
+---
+# Adding service for Mongo db
+# We are taking ClusterIP service as this communicate with internal POD's only
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongod
+  namespace: roboshop
+  labels:
+    tier: database
+    project: rosboshop
+    component: mongodb
+
+spec:
+  selector:
+    # selecting mongodb pod based on the below labels and add to the service
+    tier: database
+    project: rosboshop
+    component: mongodb
+  ports:
+    - protocol: TCP
+      port: 27017          # service port
+      targetPort: 27017    # container port
