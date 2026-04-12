@@ -53,5 +53,5 @@ spec:
     component: redis
   ports:
     - protocol: TCP
-      port: 5679          # service port
-      targetPort: 5679    # container port
+      port: 6379          # service port
+      targetPort: 6379    # container port
