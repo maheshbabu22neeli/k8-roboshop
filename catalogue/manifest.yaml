@@ -83,7 +83,7 @@ spec:
               name: catalogue
 
 ---
-# Adding service for Mongo db
+# Adding service for Catalogue
 # We are taking ClusterIP service as this communicate with internal POD's only
 apiVersion: v1
 kind: Service

@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: roboshop
+  annotations:
+    kubernetes.io/change-cause: "deploying redis from github"
+  labels:
+    tier: database
+    project: rosboshop
+    component: redis
+
+spec:
+  replicas: 1
+  selector:
+    # This match labels will go and find the pods who contain these labels
+    matchLabels:
+      tier: database
+      project: rosboshop
+      component: redis
+
+  # This is a POD definition/template (pod is a subset of replica-set)
+  template:
+    metadata:
+      # POD Labels, these labels will refer in replica-set selector
+      labels:
+        tier: database
+        project: rosboshop
+        component: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7.0
+
+---
+# Adding service for Redis
+# We are taking ClusterIP service as this communicate with internal POD's only
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: roboshop
+  labels:
+    tier: database
+    project: rosboshop
+    component: redis
+
+spec:
+  selector:
+    # selecting redis pod based on the below labels and add to the service
+    tier: database
+    project: rosboshop
+    component: redis
+  ports:
+    - protocol: TCP
+      port: 5679          # service port
+      targetPort: 5679    # container port
