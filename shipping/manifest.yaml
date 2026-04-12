@@ -67,7 +67,7 @@ spec:
             #httpGet:
               #path: /health
               #port: 8080
-            initialDelaySeconds: 5
+            initialDelaySeconds: 15
             failureThreshold: 2
             periodSeconds: 10
 
@@ -76,6 +76,13 @@ spec:
               path: /health
               port: 8080
             failureThreshold: 2
+            periodSeconds: 10
+
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            failureThreshold: 20
             periodSeconds: 10
 
           # This container will refer to the above created config map with name 'shipping'

@@ -93,3 +93,6 @@ Connection closed.
 {"app":"OK","mongo":true}[root@debug /]#
 
 ```
+
+## Shipping
+- For large application we might need to add startUpProbe as well.
