@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Pod
+metadata:
+  name: debug
+  namespace: roboshop
+  labels:
+    tier: support
+    project: rosboshop
+    component: debug
+
+spec:
+  containers:
+    - name: debug
+      image: maheshbabu22neeli/debug:1.2.0
+      imagePullPolicy: Always
