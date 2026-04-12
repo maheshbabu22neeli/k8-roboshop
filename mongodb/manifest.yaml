@@ -11,7 +11,7 @@ metadata:
     component: mongodb
 
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     # This match labels will go and find the pods who contain these labels
     matchLabels:
