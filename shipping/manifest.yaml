@@ -53,13 +53,13 @@ spec:
           resources:
             # this is minimum resource, soft limit
             requests:
-              memory: "64Mi"  # RAM
-              cpu: "150m"
+              memory: "128Mi"  # RAM
+              cpu: "200m"
 
             # this is maximum resource, hard limit
             limits:
-              memory: "128Mi"  # RAM
-              cpu: "200m"
+              memory: "256Mi"  # RAM
+              cpu: "250m"
 
           readinessProbe:
             tcpSocket:
@@ -67,7 +67,7 @@ spec:
             #httpGet:
               #path: /health
               #port: 8080
-            initialDelaySeconds: 15
+            initialDelaySeconds: 20
             failureThreshold: 2
             periodSeconds: 10
 
@@ -82,7 +82,7 @@ spec:
             httpGet:
               path: /health
               port: 8080
-            failureThreshold: 20
+            failureThreshold: 30
             periodSeconds: 10
 
           # This container will refer to the above created config map with name 'shipping'
