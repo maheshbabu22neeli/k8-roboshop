@@ -58,7 +58,29 @@ NAME                         READY   STATUS    RESTARTS   AGE
 catalogue-6bd7764896-j956m   1/1     Running   0          2m55s
 mongodb-6589f5667b-bftg4     1/1     Running   0          17m
 
+```
 
 
+## Debug
 
+```shell
+$ k9s
+<<K9s-Shell>> Pod: roboshop/catalogue-7cff9dfd4d-brjk2 | Container: catalogue
+[root@debug /]# curl http://catalogue:8080/health
+{"app":"OK","mongo":true}[root@debug /]#
+[root@debug /]#
+[root@debug /]#
+
+[root@debug /]# telnet redis 6379
+Trying 10.100.56.240...
+Connected to redis.
+Escape character is '^]'.
+
+[root@debug /]# telnet mongodb 27017
+Trying 10.100.140.73...
+Connected to mongodb.
+Escape character is '^]'.
+^]
+telnet> quit
+Connection closed.
 ```
