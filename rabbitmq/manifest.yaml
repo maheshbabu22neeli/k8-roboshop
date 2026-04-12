@@ -74,5 +74,5 @@ spec:
     component: rabbitmq
   ports:
     - protocol: TCP
-      port: 4369          # service port
-      targetPort: 4369    # container port
+      port: 5672          # service port
+      targetPort: 5672    # container port
