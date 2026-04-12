@@ -88,4 +88,8 @@ Connection closed.
 [root@debug /]# curl http://cart:8080/health
 {"app":"OK","redis":true}[root@debug /]#
 
+
+[root@debug /]# curl http://user:8080/health
+{"app":"OK","mongo":true}[root@debug /]#
+
 ```

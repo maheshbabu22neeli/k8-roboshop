@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: roboshop
+  annotations:
+    kubernetes.io/change-cause: "deploying mysql:1.2.0"
+  labels:
+    tier: database
+    project: rosboshop
+    component: mysql
+
+spec:
+  replicas: 1
+  selector:
+    # This match labels will go and find the pods who contain these labels
+    matchLabels:
+      tier: database
+      project: rosboshop
+      component: mysql
+
+  # This is a POD definition/template (pod is a subset of replica-set)
+  template:
+    metadata:
+      # POD Labels, these labels will refer in replica-set selector
+      labels:
+        tier: database
+        project: rosboshop
+        component: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: maheshbabu22neeli/mysql:1.2.0
+          imagePullPolicy: Always
+
+---
+# Adding service for Mongo db
+# We are taking ClusterIP service as this communicate with internal POD's only
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: roboshop
+  labels:
+    tier: database
+    project: rosboshop
+    component: mysql
+
+spec:
+  selector:
+    # selecting mysql pod based on the below labels and add to the service
+    tier: database
+    project: rosboshop
+    component: mysql
+  ports:
+    - protocol: TCP
+      port: 3306          # service port
+      targetPort: 3306    # container port
