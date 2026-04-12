@@ -55,12 +55,10 @@ service/catalogue created
 
 $ kubectl get pods -n roboshop
 NAME                         READY   STATUS    RESTARTS   AGE
-catalogue-6bd7764896-9tclz   1/1     Running   0          40s
-catalogue-6bd7764896-j956m   1/1     Running   0          39s
-catalogue-6bd7764896-lrjf6   1/1     Running   0          39s
-mongodb-6589f5667b-bftg4     1/1     Running   0          15m
-mongodb-6589f5667b-m4gxg     1/1     Running   0          15m
-mongodb-6589f5667b-wsk4r     1/1     Running   0          15m
+catalogue-6bd7764896-j956m   1/1     Running   0          2m55s
+mongodb-6589f5667b-bftg4     1/1     Running   0          17m
+
+
 
 
 ```

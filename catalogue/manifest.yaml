@@ -48,6 +48,35 @@ spec:
       containers:
         - name: catalogue
           image: maheshbabu22neeli/catalogue:1.2.0
+
+          resources:
+            # this is minimum resource, soft limit
+            requests:
+              memory: "64Mi"  # RAM
+              cpu: "150m"
+
+            # this is maximum resource, hard limit
+            limits:
+              memory: "128Mi"  # RAM
+              cpu: "200m"
+
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            #httpGet:
+              #path: /health
+              #port: 8080
+            initialDelaySeconds: 5
+            failureThreshold: 2
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            failureThreshold: 2
+            periodSeconds: 10
+
           # This container will refer to the above created config map with name 'catalogue'
           envFrom:
           - configMapRef:
