@@ -48,7 +48,7 @@ spec:
       containers:
         - name: catalogue
           image: maheshbabu22neeli/catalogue:1.2.0
-          imagePullPolicy: always   # Always pull the image from ECR/GitHub
+          imagePullPolicy: Always   # Always pull the image from ECR/GitHub
 
           resources:
             # this is minimum resource, soft limit

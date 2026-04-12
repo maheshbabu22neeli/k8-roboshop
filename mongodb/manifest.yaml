@@ -31,7 +31,7 @@ spec:
       containers:
         - name: mongodb
           image: maheshbabu22neeli/mongodb:1.2.0
-          imagePullPolicy: always
+          imagePullPolicy: Always
 
 ---
 # Adding service for Mongo db
