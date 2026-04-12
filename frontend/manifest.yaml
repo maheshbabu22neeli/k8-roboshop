@@ -85,7 +85,7 @@ spec:
 
 ---
 # Adding service for frontend
-# We are taking ClusterIP service as this communicate with internal POD's only
+# We are taking LoadBalancer service as this communicate with External Users
 apiVersion: v1
 kind: Service
 metadata:
@@ -97,7 +97,7 @@ metadata:
     component: frontend
 
 spec:
-  type: LoadBalancer
+  type: LoadBalancer     # Taking LoadBalancer service to expose to external users
   selector:
     # selecting mongodb pod based on the below labels and add to the service
     tier: frontend
