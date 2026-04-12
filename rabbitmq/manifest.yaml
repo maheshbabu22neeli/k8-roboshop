@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+  namespace: roboshop
+  annotations:
+    kubernetes.io/change-cause: "deploying rabbitmq by taking image from docker hub"
+  labels:
+    tier: database
+    project: rosboshop
+    component: rabbitmq
+
+spec:
+  replicas: 1
+  selector:
+    # This match labels will go and find the pods who contain these labels
+    matchLabels:
+      tier: database
+      project: rosboshop
+      component: rabbitmq
+
+  # This is a POD definition/template (pod is a subset of replica-set)
+  template:
+    metadata:
+      # POD Labels, these labels will refer in replica-set selector
+      labels:
+        tier: database
+        project: rosboshop
+        component: rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+          image: rabbitmq:3
+          imagePullPolicy: Always
+
+---
+# Adding service for Mongo db
+# We are taking ClusterIP service as this communicate with internal POD's only
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+  namespace: roboshop
+  labels:
+    tier: database
+    project: rosboshop
+    component: rabbitmq
+
+spec:
+  selector:
+    # selecting rabbitmq pod based on the below labels and add to the service
+    tier: database
+    project: rosboshop
+    component: rabbitmq
+  ports:
+    - protocol: TCP
+      port: 4369          # service port
+      targetPort: 4369    # container port
