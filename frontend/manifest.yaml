@@ -1,0 +1,109 @@
+# Config Map
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend
+  namespace: roboshop
+  labels:
+    tier: frontend
+    project: rosboshop
+    component: frontend
+
+data:
+  MONGO: "true"
+  MONGO_URL: "mongodb://mongodb:27017/frontend"
+
+---
+# Deployment set
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: roboshop
+  annotations:
+    kubernetes.io/change-cause: "deploying frontend:1.2.0"
+  labels:
+    tier: frontend
+    project: rosboshop
+    component: frontend
+
+spec:
+  replicas: 1
+  selector:
+    # This match labels will go and find the pods who contain these labels
+    matchLabels:
+      tier: frontend
+      project: rosboshop
+      component: frontend
+
+  # This is a POD definition/template (pod is a subset of replica-set)
+  template:
+    metadata:
+      # POD Labels, these labels will refer in replica-set selector
+      labels:
+        tier: frontend
+        project: rosboshop
+        component: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: maheshbabu22neeli/frontend:1.2.0
+          imagePullPolicy: Always   # Always pull the image from ECR/GitHub
+
+          resources:
+            # this is minimum resource, soft limit
+            requests:
+              memory: "64Mi"  # RAM
+              cpu: "150m"
+
+            # this is maximum resource, hard limit
+            limits:
+              memory: "128Mi"  # RAM
+              cpu: "200m"
+
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            #httpGet:
+              #path: /
+              #port: 80
+            initialDelaySeconds: 5
+            failureThreshold: 2
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            failureThreshold: 2
+            periodSeconds: 10
+
+          # This container will refer to the above created config map with name 'frontend'
+          envFrom:
+          - configMapRef:
+              name: frontend
+
+---
+# Adding service for frontend
+# We are taking ClusterIP service as this communicate with internal POD's only
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: roboshop
+  labels:
+    tier: frontend
+    project: rosboshop
+    component: frontend
+
+spec:
+  type: LoadBalancer
+  selector:
+    # selecting mongodb pod based on the below labels and add to the service
+    tier: frontend
+    project: rosboshop
+    component: frontend
+  ports:
+    - protocol: TCP
+      port: 80         # service port
+      targetPort: 80   # container port
