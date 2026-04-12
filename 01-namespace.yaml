@@ -4,5 +4,4 @@ metadata:
   name: roboshop
   labels:
     project: roboshop
-    environment: dev
     purpose: namespace for roboshop application
