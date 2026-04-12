@@ -1,0 +1,113 @@
+# Config Map
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: payment
+  namespace: roboshop
+  labels:
+    tier: backend
+    project: rosboshop
+    component: payment
+
+data:
+  CART_HOST: "cart"
+  CART_PORT: "8080"
+  USER_HOST: "user"
+  USER_PORT: "8080"
+  AMQP_HOST: "rabbitmq"
+  AMQP_USER: "roboshop"
+  AMQP_PASS: "roboshop123"
+
+---
+# Deployment set
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment
+  namespace: roboshop
+  annotations:
+    kubernetes.io/change-cause: "deploying payment:1.2.0"
+  labels:
+    tier: backend
+    project: rosboshop
+    component: payment
+
+spec:
+  replicas: 1
+  selector:
+    # This match labels will go and find the pods who contain these labels
+    matchLabels:
+      tier: backend
+      project: rosboshop
+      component: payment
+
+  # This is a POD definition/template (pod is a subset of replica-set)
+  template:
+    metadata:
+      # POD Labels, these labels will refer in replica-set selector
+      labels:
+        tier: backend
+        project: rosboshop
+        component: payment
+    spec:
+      containers:
+        - name: payment
+          image: maheshbabu22neeli/payment:1.2.0
+          imagePullPolicy: Always   # Always pull the image from ECR/GitHub
+
+          resources:
+            # this is minimum resource, soft limit
+            requests:
+              memory: "64Mi"  # RAM
+              cpu: "150m"
+
+            # this is maximum resource, hard limit
+            limits:
+              memory: "128Mi"  # RAM
+              cpu: "200m"
+
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            #httpGet:
+              #path: /health
+              #port: 8080
+            initialDelaySeconds: 5
+            failureThreshold: 2
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            failureThreshold: 2
+            periodSeconds: 10
+
+          # This container will refer to the above created config map with name 'payment'
+          envFrom:
+          - configMapRef:
+              name: payment
+
+---
+# Adding service for payment
+# We are taking ClusterIP service as this communicate with internal POD's only
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment
+  namespace: roboshop
+  labels:
+    tier: backend
+    project: rosboshop
+    component: payment
+
+spec:
+  selector:
+    # selecting payment pod based on the below labels and add to the service
+    tier: backend
+    project: rosboshop
+    component: payment
+  ports:
+    - protocol: TCP
+      port: 8080          # service port
+      targetPort: 8080    # container port
