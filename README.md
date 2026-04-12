@@ -83,4 +83,9 @@ Escape character is '^]'.
 ^]
 telnet> quit
 Connection closed.
+
+
+[root@debug /]# curl http://cart:8080/health
+{"app":"OK","redis":true}[root@debug /]#
+
 ```
