@@ -63,7 +63,7 @@ spec:
 
           readinessProbe:
             tcpSocket:
-              port: 8080
+              port: 80
             #httpGet:
               #path: /
               #port: 80
