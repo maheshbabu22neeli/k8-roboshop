@@ -1,0 +1,78 @@
+# Config Map
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: catalogue
+  namespace: roboshop
+  labels:
+    tier: backend
+    project: rosboshop
+    component: catalogue
+
+data:
+  MONGO: "true"
+  MONGO_URL: "mongodb://mongodb:27017/catalogue"
+
+---
+# Deployment set
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalogue
+  namespace: roboshop
+  annotations:
+    kubernetes.io/change-cause: "deploying catalogue:1.2.0"
+  labels:
+    tier: backend
+    project: rosboshop
+    component: catalogue
+
+spec:
+  replicas: 3
+  selector:
+    # This match labels will go and find the pods who contain these labels
+    matchLabels:
+      tier: backend
+      project: rosboshop
+      component: catalogue
+
+  # This is a POD definition/template (pod is a subset of replica-set)
+  template:
+    metadata:
+      # POD Labels, these labels will refer in replica-set selector
+      labels:
+        tier: backend
+        project: rosboshop
+        component: catalogue
+    spec:
+      containers:
+        - name: catalogue
+          image: maheshbabu22neeli/catalogue:1.2.0
+          # This container will refer to the above created config map with name 'catalogue'
+          envFrom:
+          - configMapRef:
+              name: catalogue
+
+---
+# Adding service for Mongo db
+# We are taking ClusterIP service as this communicate with internal POD's only
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalogue
+  namespace: roboshop
+  labels:
+    tier: backend
+    project: rosboshop
+    component: catalogue
+
+spec:
+  selector:
+    # selecting mongodb pod based on the below labels and add to the service
+    tier: backend
+    project: rosboshop
+    component: catalogue
+  ports:
+    - protocol: TCP
+      port: 8080          # service port
+      targetPort: 8080    # container port
