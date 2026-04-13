@@ -1,6 +1,7 @@
 # k8-roboshop
 Roboshop application using Kubernetes
 
+![k8-roboshop.drawio.svg](images/k8-roboshop.drawio.svg)
 
 ## Mongodb
 
