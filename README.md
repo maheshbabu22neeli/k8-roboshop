@@ -30,10 +30,10 @@ $ kubectl describe svc mongodb -n roboshop
 Name:                     mongodb
 Namespace:                roboshop
 Labels:                   component=mongodb
-                          project=rosboshop
+                          project=roboshop
                           tier=database
 Annotations:              <none>
-Selector:                 component=mongodb,project=rosboshop,tier=database
+Selector:                 component=mongodb,project=roboshop,tier=database
 Type:                     ClusterIP
 IP:                       10.100.140.73
 IPs:                      10.100.140.73

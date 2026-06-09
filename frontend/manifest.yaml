@@ -6,7 +6,7 @@ metadata:
   namespace: roboshop
   labels:
     tier: frontend
-    project: rosboshop
+    project: roboshop
     component: frontend
 
 data:
@@ -24,7 +24,7 @@ metadata:
     kubernetes.io/change-cause: "deploying frontend:1.2.0"
   labels:
     tier: frontend
-    project: rosboshop
+    project: roboshop
     component: frontend
 
 spec:
@@ -33,7 +33,7 @@ spec:
     # This match labels will go and find the pods who contain these labels
     matchLabels:
       tier: frontend
-      project: rosboshop
+      project: roboshop
       component: frontend
 
   # This is a POD definition/template (pod is a subset of replica-set)
@@ -42,7 +42,7 @@ spec:
       # POD Labels, these labels will refer in replica-set selector
       labels:
         tier: frontend
-        project: rosboshop
+        project: roboshop
         component: frontend
     spec:
       containers:
@@ -93,7 +93,7 @@ metadata:
   namespace: roboshop
   labels:
     tier: frontend
-    project: rosboshop
+    project: roboshop
     component: frontend
 
 spec:
@@ -101,7 +101,7 @@ spec:
   selector:
     # selecting mongodb pod based on the below labels and add to the service
     tier: frontend
-    project: rosboshop
+    project: roboshop
     component: frontend
   ports:
     - protocol: TCP

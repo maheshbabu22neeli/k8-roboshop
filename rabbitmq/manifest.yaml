@@ -6,7 +6,7 @@ metadata:
   namespace: roboshop
   labels:
     tier: database
-    project: rosboshop
+    project: roboshop
     component: rabbitmq
 
 data:
@@ -24,7 +24,7 @@ metadata:
     kubernetes.io/change-cause: "deploying rabbitmq by taking image from docker hub"
   labels:
     tier: database
-    project: rosboshop
+    project: roboshop
     component: rabbitmq
 
 spec:
@@ -33,7 +33,7 @@ spec:
     # This match labels will go and find the pods who contain these labels
     matchLabels:
       tier: database
-      project: rosboshop
+      project: roboshop
       component: rabbitmq
 
   # This is a POD definition/template (pod is a subset of replica-set)
@@ -42,7 +42,7 @@ spec:
       # POD Labels, these labels will refer in replica-set selector
       labels:
         tier: database
-        project: rosboshop
+        project: roboshop
         component: rabbitmq
     spec:
       containers:
@@ -63,14 +63,14 @@ metadata:
   namespace: roboshop
   labels:
     tier: database
-    project: rosboshop
+    project: roboshop
     component: rabbitmq
 
 spec:
   selector:
     # selecting rabbitmq pod based on the below labels and add to the service
     tier: database
-    project: rosboshop
+    project: roboshop
     component: rabbitmq
   ports:
     - protocol: TCP

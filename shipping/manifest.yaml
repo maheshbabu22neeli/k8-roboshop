@@ -6,7 +6,7 @@ metadata:
   namespace: roboshop
   labels:
     tier: backend
-    project: rosboshop
+    project: roboshop
     component: shipping
 
 data:
@@ -24,7 +24,7 @@ metadata:
     kubernetes.io/change-cause: "deploying shipping:1.2.0"
   labels:
     tier: backend
-    project: rosboshop
+    project: roboshop
     component: shipping
 
 spec:
@@ -33,7 +33,7 @@ spec:
     # This match labels will go and find the pods who contain these labels
     matchLabels:
       tier: backend
-      project: rosboshop
+      project: roboshop
       component: shipping
 
   # This is a POD definition/template (pod is a subset of replica-set)
@@ -42,7 +42,7 @@ spec:
       # POD Labels, these labels will refer in replica-set selector
       labels:
         tier: backend
-        project: rosboshop
+        project: roboshop
         component: shipping
     spec:
       containers:
@@ -100,14 +100,14 @@ metadata:
   namespace: roboshop
   labels:
     tier: backend
-    project: rosboshop
+    project: roboshop
     component: shipping
 
 spec:
   selector:
     # selecting shipping pod based on the below labels and add to the service
     tier: backend
-    project: rosboshop
+    project: roboshop
     component: shipping
   ports:
     - protocol: TCP

@@ -5,7 +5,7 @@ metadata:
   namespace: roboshop
   labels:
     tier: support
-    project: rosboshop
+    project: roboshop
     component: debug
 
 spec:
